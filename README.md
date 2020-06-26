@@ -3,6 +3,11 @@ SmartHome
 
 I extend the life of my old refrigerator with [Home Assistant](https://www.home-assistant.io/) and smart plug. 
 
+![Temperature diagram](https://user-images.githubusercontent.com/418868/85892494-b636b600-b7f9-11ea-947e-50f880aa8de2.png "Temperature")
+
+<img width="487" alt="Screenshot 2020-06-26 at 22 03 37" src="https://user-images.githubusercontent.com/418868/85892494-b636b600-b7f9-11ea-947e-50f880aa8de2.png">
+
+
 Hardware
 --------
 
