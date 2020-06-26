@@ -1,0 +1,4 @@
+smarthome:
+  hosts:
+    first:
+      ansible_host: smarthome
