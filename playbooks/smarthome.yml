@@ -9,7 +9,7 @@
         - |
           interface=wlan0
           hw_mode=g
-          channel=0
+          channel=7
           ieee80211d=1
           country_code=BZ
           ieee80211n=1
