@@ -30,6 +30,11 @@
         state: present
         reload: yes
 
+    - systemd:
+        name: network-manager
+        state: stopped
+        enabled: false
+
     - template:
         src: eth0.network
         dest: /etc/systemd/network/10-eth0.network
