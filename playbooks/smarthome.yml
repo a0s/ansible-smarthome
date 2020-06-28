@@ -1,28 +1,29 @@
-#
-# private wifi
-#
-
-- hosts: smarthome
-  roles:
-    - role: a0s.hostapd
-      hostapd_conf:
-        - |
-          interface=wlan0
-          hw_mode=g
-          channel=7
-          ieee80211d=1
-          country_code=BZ
-          ieee80211n=1
-          wmm_enabled=1
-          ssid={{ lookup('env','SMARTHOME_PRIVATE_WIFI_SSID') }}
-          auth_algs=1
-          wpa=2
-          wpa_key_mgmt=WPA-PSK
-          rsn_pairwise=CCMP
-          wpa_passphrase={{ lookup('env','SMARTHOME_PRIVATE_WIFI_PASSWORD') }}
-
 - hosts: smarthome
   tasks:
+
+    #
+    # private wifi
+    #
+
+    - include_role:
+        name: a0s.hostapd
+      vars:
+        hostapd_conf:
+          - |
+            interface=wlan0
+            hw_mode=g
+            channel=7
+            ieee80211d=1
+            country_code=BZ
+            ieee80211n=1
+            wmm_enabled=1
+            ssid={{ lookup('env','SMARTHOME_PRIVATE_WIFI_SSID') }}
+            auth_algs=1
+            wpa=2
+            wpa_key_mgmt=WPA-PSK
+            rsn_pairwise=CCMP
+            wpa_passphrase={{ lookup('env','SMARTHOME_PRIVATE_WIFI_PASSWORD') }}
+
     - sysctl:
         name: net.ipv4.ip_forward
         value: "1"
@@ -45,8 +46,10 @@
 
     - command: networkctl reload
 
-- hosts: smarthome
-  tasks:
+    #
+    # mosquitto
+    #
+
     - file: path=/opt/mosquitto/config state=directory
     - file: path=/opt/mosquitto/data state=directory
     - file: path=/opt/mosquitto/log state=directory
@@ -56,10 +59,6 @@
         dest: /opt/mosquitto/config/mosquitto.conf
         owner: 1883
         group: 1883
-
-    #
-    # mosquitto
-    #
 
     - include_role:
         name: docker-systemd-service
@@ -94,3 +93,29 @@
         container_privileged: true
         container_env:
           TZ: 'Europe/Moscow'
+
+    #
+    # avahi-daemon
+    #
+
+    - include_role:
+        name: a0s.avahi
+      vars:
+        avahi_default_conf:
+          - |
+            AVAHI_DAEMON_DETECT_LOCAL=1
+        avahi_conf:
+          server:
+            - |
+              use-ipv4=yes
+              use-ipv6=no
+              ratelimit-interval-usec=1000000
+              ratelimit-burst=1000
+              allow-interfaces=eth0
+          wide-area:
+            - |
+              enable-wide-area=yes
+          publish:
+            - |
+              publish-hinfo=no
+              publish-workstation=no

@@ -1,6 +1,9 @@
 - src: a0s.hostapd
   version: 0.0.1
 
+- src: a0s.avahi
+  version: 0.0.1
+
 #- src: mhutter.docker-systemd-service
 #  version: v2.2.0
 
