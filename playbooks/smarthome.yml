@@ -1,6 +1,5 @@
 - hosts: smarthome
   tasks:
-
     #
     # private wifi
     #
@@ -10,19 +9,19 @@
       vars:
         hostapd_conf:
           - |
-            interface=wlan0
+            interface={{ interface_wlan }}
             hw_mode=g
             channel=7
             ieee80211d=1
             country_code=BZ
             ieee80211n=1
             wmm_enabled=1
-            ssid={{ lookup('env','SMARTHOME_PRIVATE_WIFI_SSID') }}
+            ssid={{ interface_wlan_ssid }}
             auth_algs=1
             wpa=2
             wpa_key_mgmt=WPA-PSK
             rsn_pairwise=CCMP
-            wpa_passphrase={{ lookup('env','SMARTHOME_PRIVATE_WIFI_PASSWORD') }}
+            wpa_passphrase={{ interface_wlan_password }}
 
     - sysctl:
         name: net.ipv4.ip_forward
@@ -37,14 +36,15 @@
         enabled: false
 
     - template:
-        src: eth0.network
-        dest: /etc/systemd/network/10-eth0.network
+        src: eth.network
+        dest: /etc/systemd/network/1-eth.network
 
     - template:
-        src: wlan0.network
-        dest: /etc/systemd/network/20-wlan0.network
+        src: wlan.network
+        dest: /etc/systemd/network/5-wlan.network
 
     - command: networkctl reload
+    - command: systemctl restart hostapd
 
     #
     # mosquitto
@@ -111,7 +111,7 @@
               use-ipv6=no
               ratelimit-interval-usec=1000000
               ratelimit-burst=1000
-              allow-interfaces=eth0
+              allow-interfaces={{ interface_eth }}
           wide-area:
             - |
               enable-wide-area=yes

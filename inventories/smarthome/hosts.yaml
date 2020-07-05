@@ -2,3 +2,7 @@ smarthome:
   hosts:
     first:
       ansible_host: smarthome
+      interface_eth: eth0
+      interface_wlan: wlxd4bf7f37114c
+      interface_wlan_ssid: "{{ lookup('env','SMARTHOME_PRIVATE_WIFI_SSID') }}"
+      interface_wlan_password: "{{ lookup('env','SMARTHOME_PRIVATE_WIFI_PASSWORD') }}"

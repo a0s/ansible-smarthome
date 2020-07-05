@@ -1,5 +1,5 @@
 [Match]
-Name=eth0
+Name={{ interface_eth }}
 
 [Network]
 DHCP=yes
