@@ -1,0 +1,14 @@
+homeassistant: true
+permit_join: true
+mqtt:
+  base_topic: zigbee2mqtt
+  server: 'mqtt://localhost'
+serial:
+  port: /dev/ttyACM0
+devices:
+  '0x00158d00046056da':
+    friendly_name: holodilnik_thermometer
+  '0x00158d00039a1472':
+    friendly_name: holodilnik_dver
+advanced:
+  channel: 25

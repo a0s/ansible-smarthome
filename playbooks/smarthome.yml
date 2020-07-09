@@ -11,7 +11,7 @@
           - |
             interface={{ interface_wlan }}
             hw_mode=g
-            channel=7
+            channel=1
             ieee80211d=1
             country_code=BZ
             ieee80211n=1
@@ -57,8 +57,8 @@
     - template:
         src: mosquitto.conf
         dest: /opt/mosquitto/config/mosquitto.conf
-        owner: 1883
-        group: 1883
+        owner: "1883"
+        group: "1883"
 
     - include_role:
         name: docker-systemd-service
@@ -77,6 +77,10 @@
     #
 
     - file: path=/opt/zigbee2mqtt/data state=directory
+
+    - template:
+        src: zigbee2mqtt.yaml
+        dest: /opt/zigbee2mqtt/data/configuration.yaml
 
     - include_role:
         name: docker-systemd-service
