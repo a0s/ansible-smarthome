@@ -1,0 +1,25 @@
+#
+# janitor
+#
+
+- file: path=/opt/janitor state=directory
+
+- template:
+    src: janitor.yml
+    dest: /opt/janitor/config.yml
+  register: config
+
+- include_role:
+    name: docker-systemd-service
+  vars:
+    container_name: janitor
+    container_image: a00s/janitor:armv7-latest
+    container_volumes:
+      - '/opt/janitor/config.yml:/janitor/config.yml'
+    container_host_network: true
+    container_docker_pull: false
+
+- systemd:
+    name: janitor_container
+    state: restarted
+  when: config is changed

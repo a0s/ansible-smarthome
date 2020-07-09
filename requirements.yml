@@ -4,9 +4,5 @@
 - src: a0s.avahi
   version: 0.0.1
 
-#- src: mhutter.docker-systemd-service
-#  version: v2.2.0
-
-# Until https://github.com/mhutter/ansible-docker-systemd-service/pull/29
-- src: https://github.com/a0s/ansible-docker-systemd-service
-  version: master
+- src: https://github.com/mhutter/ansible-docker-systemd-service
+  version: v2.3.0

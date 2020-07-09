@@ -1,0 +1,25 @@
+#
+# avahi-daemon
+#
+
+- include_role:
+    name: a0s.avahi
+  vars:
+    avahi_default_conf:
+      - |
+        AVAHI_DAEMON_DETECT_LOCAL=1
+    avahi_conf:
+      server:
+        - |
+          use-ipv4=yes
+          use-ipv6=no
+          ratelimit-interval-usec=1000000
+          ratelimit-burst=1000
+          allow-interfaces={{ interface_eth }}
+      wide-area:
+        - |
+          enable-wide-area=yes
+      publish:
+        - |
+          publish-hinfo=no
+          publish-workstation=no

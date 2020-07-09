@@ -1,0 +1,45 @@
+#
+# private wifi
+#
+
+- include_role:
+    name: a0s.hostapd
+  vars:
+    hostapd_conf:
+      - |
+        interface={{ interface_wlan }}
+        hw_mode=g
+        channel=1
+        ieee80211d=1
+        country_code=BZ
+        ieee80211n=1
+        wmm_enabled=1
+        ssid={{ interface_wlan_ssid }}
+        auth_algs=1
+        wpa=2
+        wpa_key_mgmt=WPA-PSK
+        rsn_pairwise=CCMP
+        wpa_passphrase={{ interface_wlan_password }}
+
+- sysctl:
+    name: net.ipv4.ip_forward
+    value: "1"
+    sysctl_set: true
+    state: present
+    reload: yes
+
+- systemd:
+    name: network-manager
+    state: stopped
+    enabled: false
+
+- template:
+    src: eth.network
+    dest: /etc/systemd/network/1-eth.network
+
+- template:
+    src: wlan.network
+    dest: /etc/systemd/network/5-wlan.network
+
+- command: networkctl reload
+- command: systemctl restart hostapd

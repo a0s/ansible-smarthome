@@ -12,3 +12,4 @@ devices:
     friendly_name: holodilnik_dver
 advanced:
   channel: 25
+  log_level: debug

@@ -6,3 +6,5 @@ smarthome:
       interface_wlan: wlxd4bf7f37114c
       interface_wlan_ssid: "{{ lookup('env','SMARTHOME_PRIVATE_WIFI_SSID') }}"
       interface_wlan_password: "{{ lookup('env','SMARTHOME_PRIVATE_WIFI_PASSWORD') }}"
+      monitoring_telegram_bot_id: "{{ lookup('env','SMARTHOME_TELEGRAM_BOT_ID') }}"
+      monitoring_telegram_chat_id: "{{ lookup('env','SMARTHOME_TELEGRAM_CHAT_ID') }}"

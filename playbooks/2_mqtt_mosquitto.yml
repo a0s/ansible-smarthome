@@ -1,0 +1,31 @@
+#
+# mosquitto
+#
+
+- file: path=/opt/mosquitto/config state=directory
+- file: path=/opt/mosquitto/data state=directory
+- file: path=/opt/mosquitto/log state=directory
+
+- template:
+    src: mosquitto.conf
+    dest: /opt/mosquitto/config/mosquitto.conf
+    owner: "1883"
+    group: "1883"
+  register: config
+
+- include_role:
+    name: docker-systemd-service
+  vars:
+    container_name: mosquitto
+    container_image: eclipse-mosquitto:1.6.10
+    container_volumes:
+      - '/opt/mosquitto/config:/mosquitto/config'
+      - '/opt/mosquitto/data:/mosquitto/data'
+      - '/opt/mosquitto/log:/mosquitto/log'
+    container_host_network: true
+    container_docker_pull: false
+
+- systemd:
+    name: mosquitto_container
+    state: restarted
+  when: config is changed

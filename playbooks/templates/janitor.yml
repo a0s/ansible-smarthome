@@ -1,0 +1,27 @@
+# https://github.com/a-bali/janitor/blob/master/config.yml
+
+debug: false
+logsize: 1000
+
+monitor:
+  mqtt:
+    server: localhost
+    port: 1883
+    targets:
+      - name: holodilnik_thermometer
+        topic: "zigbee2mqtt/holodilnik_thermometer"
+        timeout: 3600
+
+  ping:
+    interval: 15
+    threshold: 2
+    targets:
+      - name: cloudflare_dns
+        address: 1.1.1.1
+      - name: holodilnik_rozetka
+        address: 192.168.177.8
+
+alert:
+  telegram:
+    token: "{{ monitoring_telegram_bot_id }}"
+    chat: {{ monitoring_telegram_chat_id }}
