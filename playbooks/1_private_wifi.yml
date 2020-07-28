@@ -41,5 +41,13 @@
     src: wlan.network
     dest: /etc/systemd/network/5-wlan.network
 
+- template:
+    src: 10-wifi-disable-powermanagement.rules
+    dest: /etc/udev/rules.d/10-wifi-disable-powermanagement.rules
+
+- template:
+    src: default-wifi-powersave-on.conf
+    dest: /etc/NetworkManager/conf.d/default-wifi-powersave-on.conf
+
 - command: networkctl reload
 - command: systemctl restart hostapd

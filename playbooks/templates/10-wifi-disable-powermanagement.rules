@@ -1,0 +1,1 @@
+KERNEL=="wl*", ACTION=="add", RUN+="/sbin/iwconfig {{ interface_wlan }} power off"
