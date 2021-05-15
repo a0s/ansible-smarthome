@@ -1,0 +1,9 @@
+[Unit]
+Description=HDD01
+
+[Mount]
+What=/dev/disk/by-uuid/a0e1ae88-fddc-4941-89fd-c57e3da8aefa
+Where=/media/storage
+Type=ext4
+Options=rw
+DirectoryMode=0755

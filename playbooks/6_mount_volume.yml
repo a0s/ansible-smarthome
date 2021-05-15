@@ -1,0 +1,43 @@
+- template:
+    src: mount_volume/blacklist-floppy.conf
+    dest: /etc/modprobe.d/blacklist-floppy.conf
+  register: blacklist
+
+- when: blacklist is changed
+  shell: |
+    update-initramfs -u
+    update-grub
+
+- when: blacklist is changed
+  reboot:
+
+
+- file:
+    path: /media/storage
+    state: directory
+
+
+- template:
+    src: mount_volume/storage.mount.systemd
+    dest: /etc/systemd/system/media-storage.mount
+  register: mount
+
+- when: mount is changed
+  ansible.builtin.systemd:
+    name: media-storage.mount
+    enabled: true
+    daemon_reload: true
+
+
+
+- template:
+    src: mount_volume/storage.automount.systemd
+    dest: /etc/systemd/system/media-storage.automount
+  register: automount
+
+- when: automount is changed
+  ansible.builtin.systemd:
+    name: media-storage.automount
+    enabled: true
+    daemon_reload: true
+    state: started

@@ -1,0 +1,50 @@
+#  Other releases: stable, test, nightly
+
+- name: Set edge
+  set_fact:
+    release: edge
+
+- name: Set armhf
+  set_fact: arch=armhf
+  when: ansible_machine == 'armv7l'
+
+- name: Set amd64
+  set_fact: arch=amd64
+  when: ansible_machine == 'x86_64'
+
+- name: Install packages
+  apt:
+    name:
+      [
+        "apt-transport-https",
+        "ca-certificates",
+        "curl",
+        "software-properties-common",
+        "wget",
+        "gpg-agent",
+      ]
+    update_cache: yes
+    cache_valid_time: 86400
+    state: present
+    install_recommends: no
+
+- name: Add docker gpg key
+  shell: wget -qO - https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+- name: Get ubuntu release
+  shell: lsb_release -cs
+  register: lsb_release
+
+- name: Add docker repository
+  apt_repository:
+    repo: deb [arch={{ arch }}] https://download.docker.com/linux/ubuntu {{ lsb_release.stdout }} {{ release }}
+    state: present
+    filename: docker
+
+- name: Install docker
+  apt:
+    name: docker-ce
+    update_cache: yes
+    cache_valid_time: 86400
+    state: present
+    install_recommends: no

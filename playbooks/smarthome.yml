@@ -1,7 +1,9 @@
 - hosts: smarthome
   tasks:
-    - include_tasks: 1_private_wifi.yml
+    - include_role: name=docker
+    # - include_tasks: 1_private_wifi.yml
     - include_tasks: 2_mqtt_mosquitto.yml
     - include_tasks: 3_zigbee2mqtt.yml
-    - include_tasks: 4_avahi_daemon.yml
-    - include_tasks: 5_monitoring_janitor.yml
+    # - include_tasks: 4_avahi_daemon.yml
+    # - include_tasks: 5_monitoring_janitor.yml
+    - include_tasks: 6_mount_volume.yml

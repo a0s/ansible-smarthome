@@ -1,0 +1,9 @@
+[Unit]
+Description=HDD01
+
+[Automount]
+Where=/media/storage
+TimeoutIdleSec=300
+
+[Install]
+RequiredBy=docker.service
