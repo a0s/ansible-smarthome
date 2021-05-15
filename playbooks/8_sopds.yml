@@ -1,0 +1,28 @@
+#- shell: docker network inspect sopds
+#  ignore_errors: true
+#  register: network
+#  changed_when: false
+#
+#- when: network.rc != 0
+#  shell: docker network create sopds
+
+- file:
+    path: /media/storage/sopds/pgsql
+    state: directory
+    recurse: true
+
+- include_role:
+    name: docker-systemd-service
+  vars:
+    container_name: sopds
+    container_image: zveronline/sopds:latest
+    container_volumes:
+      - '/media/storage/transmission/downloads/complete/fb2.Flibusta.Net/:/library:ro'
+      - '/media/storage/sopds/pgsql:/var/lib/pgsql'
+    container_ports:
+      - '8071:8001'
+    container_docker_pull: false
+    container_env:
+      SOPDS_SU_NAME: "{{ lookup('env', 'SOPDS_USER') }}"
+      SOPDS_SU_EMAIL: "{{ lookup('env', 'SOPDS_USER') }}@local.host"
+      SOPDS_SU_PASS: "{{ lookup('env', 'SOPDS_PASSWORD') }}"
