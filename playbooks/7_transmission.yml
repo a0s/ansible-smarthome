@@ -1,0 +1,44 @@
+- file:
+    path: /media/storage/transmission/config
+    state: directory
+    recurse: true
+
+- file:
+    path: /media/storage/transmission/downloads
+    state: directory
+    recurse: true
+
+- file:
+    path: /media/storage/transmission/watch
+    state: directory
+    recurse: true
+
+- include_role:
+    name: docker-systemd-service
+  vars:
+    container_name: transmission
+    container_image: linuxserver/transmission:version-3.00-r2
+    container_volumes:
+      - '/media/storage/transmission/config:/config'
+      - '/media/storage/transmission/downloads:/downloads'
+      - '/media/storage/transmission/watch:/watch'
+    container_ports:
+      - '9091:9091'
+      - '51413:51413'
+      - '51413:51413/udp'
+#    container_host_network: true
+#    container_privileged: true
+    container_docker_pull: false
+    container_env:
+      PUID: 1000
+      PGID: 1000
+      TZ: 'Europe/Moscow'
+#      TRANSMISSION_WEB_HOME: /combustion-release/
+      TRANSMISSION_WEB_HOME: /transmission-web-control/
+#      TRANSMISSION_WEB_HOME: /kettu/
+#      TRANSMISSION_WEB_HOME: /flood-for-transmission/
+      USER: "{{ lookup('env', 'TRANSMISSION_USER') }}"
+      PASS: "{{ lookup('env', 'TRANSMISSION_PASSWORD') }}"
+#      WHITELIST: iplist #optional
+#      HOST_WHITELIST: dnsnane list #optional
+
